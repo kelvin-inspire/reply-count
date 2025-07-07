@@ -159,15 +159,21 @@
     const emojis = ["😅", "😐", "🙄", "😤", "😩", "😭", "💀", "🧟‍♂️", "📴"];
 
     const gifs = [
+      "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMG43NXQyNWlpamZ1MDdhZXltd3V1M3F3bDN0NHdvNW96MDR0dDg3ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QZyBvNVaMbIZ9yadec/giphy.gif",
+      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDVlYzQ2cTg2dXJhNDFqcDV0a3RiYW1qejJvaHl6NXVhemt3ZjB2ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qio026weFM1MDG2Lwp/giphy.gif",
+      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGtyeWd1a2RwZmV6bGRxeDZlYW55bWx1OW83Y3NvemhrcHR4czB2ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OAlOpMbLp0jCzfq2az/giphy.gif",
+      "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExemhlanZmbWYyNXVkc25yZjUyNmQyMmFlaTU0dXp5N3U5eXA1OGY5diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PCvkgunX9ZbEEyfTQH/giphy.gif",
+      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjdjeDV6NDJvNHhkbGN5eXQ2Zmhyc3dncWRyM3gxZXoxNWVrbXV3YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ii4YQKIq6CR8IqETk9/giphy.gif",
+      "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGE0aGw2YWR3M212eW43Nm11cDVwdjdwcDRiMWEwZ213c2hiaHB4NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PibODdY9C5xiKzmRhW/giphy.gif",
+      "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDc4d2d6ODNhbXowc2xvcmFyZDh4OXQzcGVjN29kdzhkY3ZjczN1dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KbAkMMoVyry2tIcaE0/giphy.gif",
+      "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWIwajg3cTZveGx6a3MzaW93cWs1bXJ4YzJxbTI3aDM3ZWRwaWp0diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pOZhYWu4VXFSrLeREZ/giphy.gif",
+      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnN1cm1zODVld3QyaXU2MmNvZ3NqNXd6amFkMnc2YmhjMWZkMXlhcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ohs851xn0Qm3xHUhG/giphy.gif",
       "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMHpueDN6Z2J0OTk5a3Rob291OW1tZnNnMHdyc2xubnRtdTM2c2lzZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QBd2kLB5qDmysEXre9/giphy.gif",
       "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3JpeXNsNTRtdGNsdW56NnRpd2xsczJjdXphODVwMmRhMmp4em9oaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/um2kBnfo55iW4ZH1Fa/giphy.gif"
     ];
 
-    let gifUrl = gifs[0];
-    if (days > 10) {
-      gifUrl = gifs[1];
-    }
-
+    const gifUrl = gifs[Math.floor(Math.random() * gifs.length)];
+    
     document.getElementById("counter").innerText = `Nirmal has not replied in ${days} day${days !== 1 ? 's' : ''} 😭`;
     document.getElementById("message").innerText = funnyMessages[days % funnyMessages.length];
     document.getElementById("emoji").innerText = emojis[days % emojis.length];
