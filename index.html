@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nirmal Tracker</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #f4f4f4;
+    }
+    .counter {
+      font-size: 2em;
+      color: #e63946;
+    }
+  </style>
+</head>
+<body>
+  <div class="counter" id="counter"></div>
+
+  <script>
+    function daysSince(dateString) {
+      const lastDate = new Date(dateString);
+      const today = new Date();
+      const diffTime = today - lastDate;
+      return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const lastReply = params.get("lastReply");
+
+    if (!lastReply) {
+      document.getElementById("counter").innerText =
+        "Please provide a 'lastReply' date in the URL (e.g., ?lastReply=2025-07-01)";
+    } else {
+      const days = daysSince(lastReply);
+      document.getElementById("counter").innerText =
+        `Nirmal has not replied in ${days} day${days !== 1 ? "s" : ""}.`;
+    }
+  </script>
+</body>
+</html>
