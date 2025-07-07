@@ -61,6 +61,19 @@
       font-size: 1.2em;
     }
 
+    .gif {
+      width: 100%;
+      max-width: 320px;
+      margin-top: 20px;
+      border-radius: 12px;
+    }
+
+    .footer-inside {
+      margin-top: 25px;
+      font-size: 0.9em;
+      color: var(--footer);
+    }
+
     .controls {
       margin-top: 20px;
       display: flex;
@@ -97,12 +110,6 @@
       font-size: 0.9em;
     }
 
-    footer {
-      margin-top: 30px;
-      font-size: 0.9em;
-      color: var(--footer);
-    }
-
     @media (max-width: 600px) {
       .counter {
         font-size: 1.6em;
@@ -125,15 +132,15 @@
     <div class="emoji" id="emoji">📵👻🕒</div>
     <div class="counter" id="counter"></div>
     <div class="message" id="message"></div>
+    <img id="reactionGif" class="gif" alt="Waiting GIF" />
+    <div class="footer-inside">
+      Built with concern 🥲 | <strong>#WhereIsNirmal</strong>
+    </div>
   </div>
 
   <div class="controls">
     <button onclick="takeScreenshot()">📸 Screenshot & Share</button>
   </div>
-
-  <footer>
-    Built with concern 🥲 | #WhereIsNirmal
-  </footer>
 
   <script>
     const lastReply = "2025-06-30";
@@ -149,13 +156,25 @@
       "He better show up with snacks after this 🍕"
     ];
 
-    const emojis = [
-      "😅", "😐", "🙄", "😤", "😩", "😭", "💀", "🧟‍♂️", "📴"
+    const emojis = ["😅", "😐", "🙄", "😤", "😩", "😭", "💀", "🧟‍♂️", "📴"];
+
+    const gifs = [
+      "https://media.giphy.com/media/xT9DPxggC0kI2zzMUE/giphy.gif",
+      "https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif",
+      "https://media.giphy.com/media/l4Jz3a8jO92crUlWM/giphy.gif"
     ];
+
+    let gifUrl = gifs[0];
+    if (days > 10) {
+      gifUrl = gifs[2];
+    } else if (days > 5) {
+      gifUrl = gifs[1];
+    }
 
     document.getElementById("counter").innerText = `Nirmal has not replied in ${days} day${days !== 1 ? 's' : ''} 😭`;
     document.getElementById("message").innerText = funnyMessages[days % funnyMessages.length];
     document.getElementById("emoji").innerText = emojis[days % emojis.length];
+    document.getElementById("reactionGif").src = gifUrl;
 
     function toggleTheme() {
       document.body.classList.toggle("dark");
