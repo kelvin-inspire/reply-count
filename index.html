@@ -58,6 +58,13 @@
       margin-bottom: 15px;
     }
 
+    .milestone-scale {
+      margin-top: 8px;
+      font-size: 0.95em;
+      color: #555;
+      font-style: italic;
+    }
+
     .gif {
       width: 100%;
       max-width: 320px;
@@ -124,6 +131,7 @@
   <div class="card" id="capture-card">
     <div class="emoji" id="emoji">📵👻🕒</div>
     <div class="counter" id="counter"></div>
+    <div class="milestone-scale" id="milestoneScale"></div>
     <img id="reactionGif" class="gif" alt="Waiting GIF" />
     <div class="footer-inside">
       Built with concern 🥲 | <strong>#WhereIsNirmal</strong>
@@ -154,10 +162,27 @@
     ];
 
     const gifUrl = gifs[Math.floor(Math.random() * gifs.length)];
-    
+
     document.getElementById("counter").innerText = `Nirmal has not replied in the last ${days} days.`;
     document.getElementById("emoji").innerText = emojis[days % emojis.length];
     document.getElementById("reactionGif").src = gifUrl;
+
+    // Milestone Scale Logic
+    const milestoneStep = 5;
+    const startingMilestone = 10;
+    let nextMilestone = startingMilestone;
+    while (days >= nextMilestone) {
+      nextMilestone += milestoneStep;
+    }
+
+    const milestoneScale = document.getElementById("milestoneScale");
+    if (days + 1 === nextMilestone) {
+      milestoneScale.innerText = `🎯 1 day to hit the next milestone: ${nextMilestone} days`;
+    } else if (days === nextMilestone) {
+      milestoneScale.innerText = `🎉 Milestone hit: ${nextMilestone} days! Next: ${nextMilestone + milestoneStep}`;
+    } else {
+      milestoneScale.innerText = `🎯 ${nextMilestone - days} days to next milestone: ${nextMilestone} days`;
+    }
 
     function toggleTheme() {
       document.body.classList.toggle("dark");
