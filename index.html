@@ -174,7 +174,7 @@
 
     const gifUrl = gifs[Math.floor(Math.random() * gifs.length)];
     
-    document.getElementById("counter").innerText = `Nirmal’s ghosting streak: ${days} days and counting.`;
+    document.getElementById("counter").innerText = `Nirmal has not replied in the last ${days} days.`;
     document.getElementById("message").innerText = funnyMessages[days % funnyMessages.length];
     document.getElementById("emoji").innerText = emojis[days % emojis.length];
     document.getElementById("reactionGif").src = gifUrl;
