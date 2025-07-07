@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
       --bg: linear-gradient(135deg, #f0f4f8, #d9e4f5);
@@ -55,11 +56,6 @@
       font-weight: 600;
       color: #e63946;
       margin-bottom: 15px;
-    }
-
-    .message {
-      font-size: 1.2em;
-      margin-bottom: 12px;
     }
 
     .gif {
@@ -119,10 +115,6 @@
       .emoji {
         font-size: 2.5em;
       }
-
-      .message {
-        font-size: 1em;
-      }
     }
   </style>
 </head>
@@ -132,8 +124,6 @@
   <div class="card" id="capture-card">
     <div class="emoji" id="emoji">📵👻🕒</div>
     <div class="counter" id="counter"></div>
-    <div id="milestone" class="message"></div> <!-- 🎯 Milestone scale -->
-    <div class="message" id="message"></div>
     <img id="reactionGif" class="gif" alt="Waiting GIF" />
     <div class="footer-inside">
       Built with concern 🥲 | <strong>#WhereIsNirmal</strong>
@@ -142,48 +132,32 @@
 
   <div class="controls">
     <button onclick="takeScreenshot()">📸 Screenshot & Share</button>
+    <button onclick="celebrate()">🎉 Celebrate</button>
   </div>
 
   <script>
     const lastReply = "2025-06-30";
     const days = Math.floor((new Date() - new Date(lastReply)) / (1000 * 60 * 60 * 24));
 
-    const funnyMessages = [
-      "He’s ghosting like a pro 👻",
-      "Maybe he's on a Himalayan retreat 🧘‍♂️",
-      "Still waiting... and waiting... and waiting ⏳",
-      "Is Nirmal even real? 🕵️‍♀️",
-      "It's fine. I'm totally not checking my phone every 5 mins 📱",
-      "We’ve crossed the ghosting threshold 👽",
-      "He better show up with snacks after this 🍕"
-    ];
-
     const emojis = ["😅", "😐", "🙄", "😤", "😩", "😭", "💀", "🧟‍♂️", "📴"];
 
     const gifs = [
-      // (your GIF URLs)
       "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMG43NXQyNWlpamZ1MDdhZXltd3V1M3F3bDN0NHdvNW96MDR0dDg3ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QZyBvNVaMbIZ9yadec/giphy.gif",
-      // ... keep all the other gif URLs here
+      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDVlYzQ2cTg2dXJhNDFqcDV0a3RiYW1qejJvaHl6NXVhemt3ZjB2ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qio026weFM1MDG2Lwp/giphy.gif",
+      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGtyeWd1a2RwZmV6bGRxeDZlYW55bWx1OW83Y3NvemhrcHR4czB2ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OAlOpMbLp0jCzfq2az/giphy.gif",
+      "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExemhlanZmbWYyNXVkc25yZjUyNmQyMmFlaTU0dXp5N3U5eXA1OGY5diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PCvkgunX9ZbEEyfTQH/giphy.gif",
+      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjdjeDV6NDJvNHhkbGN5eXQ2Zmhyc3dncWRyM3gxZXoxNWVrbXV3YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ii4YQKIq6CR8IqETk9/giphy.gif",
+      "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGE0aGw2YWR3M212eW43Nm11cDVwdjdwcDRiMWEwZ213c2hiaHB4NiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PibODdY9C5xiKzmRhW/giphy.gif",
+      "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDc4d2d6ODNhbXowc2xvcmFyZDh4OXQzcGVjN29kdzhkY3ZjczN1dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KbAkMMoVyry2tIcaE0/giphy.gif",
+      "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYWIwajg3cTZveGx6a3MzaW93cWs1bXJ4YzJxbTI3aDM3ZWRwaWp0diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pOZhYWu4VXFSrLeREZ/giphy.gif",
+      "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdnN1cm1zODVld3QyaXU2MmNvZ3NqNXd6amFkMnc2YmhjMWZkMXlhcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3ohs851xn0Qm3xHUhG/giphy.gif"
     ];
 
     const gifUrl = gifs[Math.floor(Math.random() * gifs.length)];
-
-    document.getElementById("counter").innerText = `Nirmal has not replied in the last ${days} day${days !== 1 ? 's' : ''}.`;
-    document.getElementById("message").innerText = funnyMessages[days % funnyMessages.length];
+    
+    document.getElementById("counter").innerText = `Nirmal has not replied in the last ${days} days.`;
     document.getElementById("emoji").innerText = emojis[days % emojis.length];
     document.getElementById("reactionGif").src = gifUrl;
-
-    // 🧮 Milestone Tracker
-    function getNextMilestone(current) {
-      const milestoneStep = 5;
-      return Math.ceil((current + 1) / milestoneStep) * milestoneStep;
-    }
-
-    const nextMilestone = getNextMilestone(days);
-    const daysToMilestone = nextMilestone - days;
-
-    document.getElementById("milestone").innerText =
-      `🎯 Only ${daysToMilestone} day${daysToMilestone !== 1 ? 's' : ''} to hit the next milestone: ${nextMilestone} days!`;
 
     function toggleTheme() {
       document.body.classList.toggle("dark");
@@ -220,6 +194,14 @@
           gif.src = originalSrc;
         });
       };
+    }
+
+    function celebrate() {
+      confetti({
+        particleCount: 120,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
     }
   </script>
 </body>
