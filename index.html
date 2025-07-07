@@ -3,8 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <title>Nirmal Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
+    :root {
+      --bg: linear-gradient(135deg, #f0f4f8, #d9e4f5);
+      --text: #333;
+      --card-bg: #fff;
+      --footer: #555;
+    }
+
+    body.dark {
+      --bg: linear-gradient(135deg, #1e1e2f, #12121a);
+      --text: #eee;
+      --card-bg: #2b2b3a;
+      --footer: #aaa;
+    }
+
     body {
       font-family: 'Rubik', sans-serif;
       display: flex;
@@ -13,18 +29,20 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
-      background: background: linear-gradient(135deg, #f0f4f8, #d9e4f5);
-      color: #333;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.3s ease;
     }
 
     .card {
-      background-color: #fff;
+      background-color: var(--card-bg);
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
       text-align: center;
       max-width: 500px;
       width: 90%;
+      transition: background-color 0.3s ease;
     }
 
     .emoji {
@@ -41,13 +59,48 @@
 
     .message {
       font-size: 1.2em;
-      color: #444;
+    }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      background: #e63946;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #c82333;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #444;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9em;
     }
 
     footer {
       margin-top: 30px;
       font-size: 0.9em;
-      color: #ffffffaa;
+      color: var(--footer);
     }
 
     @media (max-width: 600px) {
@@ -66,10 +119,16 @@
   </style>
 </head>
 <body>
-  <div class="card">
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+
+  <div class="card" id="capture-card">
     <div class="emoji" id="emoji">📵👻🕒</div>
     <div class="counter" id="counter"></div>
     <div class="message" id="message"></div>
+  </div>
+
+  <div class="controls">
+    <button onclick="takeScreenshot()">📸 Screenshot & Share</button>
   </div>
 
   <footer>
@@ -77,17 +136,8 @@
   </footer>
 
   <script>
-    function daysSince(dateString) {
-      const lastDate = new Date(dateString);
-      const today = new Date();
-      const diffTime = today - lastDate;
-      return Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    }
-
     const lastReply = "2025-06-30";
-    const days = daysSince(lastReply);
-
-    const counterText = `Nirmal has not replied in ${days} day${days !== 1 ? 's' : ''} 😭`;
+    const days = Math.floor((new Date() - new Date(lastReply)) / (1000 * 60 * 60 * 24));
 
     const funnyMessages = [
       "He’s ghosting like a pro 👻",
@@ -103,9 +153,25 @@
       "😅", "😐", "🙄", "😤", "😩", "😭", "💀", "🧟‍♂️", "📴"
     ];
 
-    document.getElementById("counter").innerText = counterText;
+    document.getElementById("counter").innerText = `Nirmal has not replied in ${days} day${days !== 1 ? 's' : ''} 😭`;
     document.getElementById("message").innerText = funnyMessages[days % funnyMessages.length];
     document.getElementById("emoji").innerText = emojis[days % emojis.length];
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      const btn = document.querySelector(".theme-toggle");
+      btn.textContent = document.body.classList.contains("dark") ? "☀️ Light Mode" : "🌙 Dark Mode";
+    }
+
+    function takeScreenshot() {
+      const card = document.getElementById("capture-card");
+      html2canvas(card).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `nirmal-counter-${new Date().toISOString().slice(0, 10)}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
   </script>
 </body>
 </html>
