@@ -8,16 +8,29 @@
       font-family: sans-serif;
       text-align: center;
       margin-top: 100px;
-      background-color: #f4f4f4;
+      background-color: #fefefe;
     }
+
     .counter {
-      font-size: 2em;
+      font-size: 2.2em;
       color: #e63946;
+      margin-bottom: 20px;
+    }
+
+    .emoji {
+      font-size: 3em;
+    }
+
+    .message {
+      font-size: 1.2em;
+      color: #555;
     }
   </style>
 </head>
 <body>
+  <div class="emoji">📵👻🕒</div>
   <div class="counter" id="counter"></div>
+  <div class="message" id="message"></div>
 
   <script>
     function daysSince(dateString) {
@@ -27,17 +40,25 @@
       return Math.floor(diffTime / (1000 * 60 * 60 * 24));
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const lastReply = params.get("lastReply");
+    const lastReply = "2025-06-30"; // Fixed start date
+    const days = daysSince(lastReply);
 
-    if (!lastReply) {
-      document.getElementById("counter").innerText =
-        "Please provide a 'lastReply' date in the URL (e.g., ?lastReply=2025-07-01)";
-    } else {
-      const days = daysSince(lastReply);
-      document.getElementById("counter").innerText =
-        `Nirmal has not replied in ${days} day${days !== 1 ? "s" : ""}.`;
-    }
+    const counterText = `Nirmal has not replied in ${days} day${days !== 1 ? 's' : ''} 😭`;
+
+    // Funny responses depending on the number of days
+    const funnyMessages = [
+      "He’s ghosting like a pro 👻",
+      "Maybe he's on a Himalayan retreat 🧘‍♂️",
+      "Still waiting... and waiting... and waiting ⏳",
+      "Is Nirmal even real? 🕵️‍♀️",
+      "It's fine. I'm totally not checking my phone every 5 mins 📱",
+      "We've crossed the ghosting threshold 👽"
+    ];
+
+    const message = funnyMessages[days % funnyMessages.length];
+
+    document.getElementById("counter").innerText = counterText;
+    document.getElementById("message").innerText = message;
   </script>
 </body>
 </html>
